@@ -34,7 +34,7 @@ jobs:
           poetry install --with dev
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}_python${{ matrix.python-version }}/cython_extensions
+          name: ${{ matrix.os }}_python${{ matrix.python-version }}.cython_extensions
           path: |
             cython_extensions
 
@@ -69,6 +69,6 @@ jobs:
           poetry install --with dev
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}_python${{ matrix.python-version }}/cython_extensions
+          name: ${{ matrix.os }}_python${{ matrix.python-version }}.cython_extensions
           path: |
             cython_extensions

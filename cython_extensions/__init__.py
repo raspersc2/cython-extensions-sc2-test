@@ -54,7 +54,6 @@ from cython_extensions.placement_solver import (
 
 from cython_extensions.units_utils import (
     cy_distance_to_squared,
-    cy_group_by_spatial,
     cy_closest_to,
     cy_center,
     cy_in_attack_range,
