@@ -36,4 +36,4 @@ jobs:
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
           path: |
-            build
+            cython_extensions
