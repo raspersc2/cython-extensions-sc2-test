@@ -52,6 +52,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ladder_binary
+          path: cython_extensions
+      - name: Display structure of downloaded files
+        run: ls -R .
       # check-out repo
       - name: Checkout repository
         uses: actions/checkout@v3
