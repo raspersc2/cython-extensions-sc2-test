@@ -32,8 +32,8 @@ jobs:
       - name: Install requirements and build extension
         run: |
           poetry install --with dev
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}_python${{ matrix.python-version }}.cython_extensions
+          name: ladder_binary
           path: |
-            cython_extensions
+            cython_extensions/*.so
