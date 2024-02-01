@@ -39,9 +39,7 @@ jobs:
             cython_extensions/*.so
   build:
     name: Compile Cython
-    needs:
-      - build_ladder_binary
-
+    needs: build_ladder_binary
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -50,7 +48,7 @@ jobs:
         python-version: ['3.11']
 
     steps:
-      - name: Get linux binaey
+      - name: Get linux binary
         uses: actions/download-artifact@v3
         with:
           name: ladder_binary
