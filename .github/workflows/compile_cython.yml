@@ -14,6 +14,11 @@ jobs:
         python-version: ['3.11']
 
     steps:
+      - name: Get linux binaey
+        uses: actions/download-artifact@v3
+        with:
+          name: ladder_binary
+          path: cython_extensions
       # check-out repo
       - name: Checkout repository
         uses: actions/checkout@v3
