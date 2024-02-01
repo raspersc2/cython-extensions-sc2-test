@@ -1,17 +1,17 @@
-name: CompileCython
+name: CompileForLadder
 on:
   workflow_call:
 
 jobs:
-  build:
-    name: Compile Cython
+  build_ladder_binary:
+    name: Compile Cython for Ladder
 
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest]
-        python-version: ['3.11']
+        os: [ ubuntu-latest ]
+        python-version: [ '3.11' ]
 
     steps:
       # check-out repo
