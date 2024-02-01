@@ -9,9 +9,9 @@ jobs:
   call-testing-pipeline:
     name: Testing
     uses: ./.github/workflows/test.yml
-  call-compiling-linux-pipeline:
-    name: CompileForLadder
-    uses: ./.github/workflows/compile_for_ladder.yml
+#  call-compiling-linux-pipeline:
+#    name: CompileForLadder
+#    uses: ./.github/workflows/compile_for_ladder.yml
   call-compiling-pipeline:
     name: CompileCython
     needs:
