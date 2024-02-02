@@ -73,11 +73,13 @@ jobs:
         with:
           name: ladder_binary
           path: cython_extensions
+      - name: Delete unwanted files
+        run: |
+          rm -f cython_extensions/*.pyx
+          rm -f cython_extensions/*.c
       - run: mkdir tmp-dir && mv cython_extensions tmp-dir/ && mv tmp-dir cython_extensions
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
           path: |
             cython_extensions
-            !cython_extensions/*.pyx
-            !cython_extensions/*.c
