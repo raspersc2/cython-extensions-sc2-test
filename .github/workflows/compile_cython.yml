@@ -75,8 +75,8 @@ jobs:
           path: cython_extensions
       - name: Delete unwanted files
         run: |
-          rm -f cython_extensions/*.pyx
-          rm -f cython_extensions/*.c
+          find cython_extensions -name "*.pyx" -or -name "*.c" -print0 | xargs -0 rm -f
+
       - run: mkdir tmp-dir && mv cython_extensions tmp-dir/ && mv tmp-dir cython_extensions
       - uses: actions/upload-artifact@v3
         with:
