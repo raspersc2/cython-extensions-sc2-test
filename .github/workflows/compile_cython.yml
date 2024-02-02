@@ -78,6 +78,6 @@ jobs:
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
           path: |
-            cython_extensions/*.so
-            cython_extensions/*.pyd
-            cython_extensions/__init__.py
+            cython_extensions
+            !cython_extensions/*.pyx
+            !cython_extensions/*.c
