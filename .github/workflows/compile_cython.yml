@@ -76,15 +76,12 @@ jobs:
           path: cython_extensions
       - name: Delete unwanted files
         run: |
-          find cython_extensions -name "*.pyx" -or -name "*.c" -print0 | xargs -0 rm -f
-
-      - name: Delete unwanted files
+          find cython_extensions -name "*.c" -print0 | xargs -0 rm -f
+        if: matrix.os != 'windows'
+      - name: Delete unwanted files windows
         run: |
-          if ($IsWindows -eq $true) {
-              Remove-Item -Path .\cython_extensions\*.c -Force
-          } else {
-              find cython_extensions -name "*.c" -print0 | xargs -0 rm -f
-          }
+          Remove-Item -Path .\cython_extensions\*.c -Force
+        if: matrix.os == 'windows'
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
