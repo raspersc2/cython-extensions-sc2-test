@@ -73,6 +73,7 @@ jobs:
         with:
           name: ladder_binary
           path: cython_extensions
+      - run: mkdir tmp-dir && mv cython_extensions tmp-dir/ && mv tmp-dir cython_extensions
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
