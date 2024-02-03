@@ -43,13 +43,14 @@ jobs:
           name: release-artifacts
 
       # Upload each artifact to the GitHub release
+      # Upload artifacts to GitHub release
       - name: Upload Artifacts
-        uses: semantic-release/exec
+        uses: svenstaro/upload-release-action@v2
         with:
-          command: |
-            for file in $(ls release-artifacts); do
-              gh release upload $RELEASE_TAG ./release-artifacts/$file
-            done
+          files: release-artifacts/*
+          token: ${{ secrets.GH_TOKEN_TEST }}
+          release_id: ${{ github.event.release.id }}
+          asset_name: ${{ runner.os }}-artifacts
 
       # Push changes and tags back to the repository
       - name: Push Changes
