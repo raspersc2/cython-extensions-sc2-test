@@ -2,11 +2,19 @@
 
 <!--next-version-placeholder-->
 
-## v0.1.0 (2024-02-03)
+## v0.2.0 (2024-02-03)
 ### Feature
-* Build ([`5e9c919`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/5e9c919691b6b2e222f838373e34d3bcd0ccb68d))
-* Build ([`e732fbe`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/e732fbe5ec3fde0ec19a4e4bbd129ba7f5512c1f))
-* Build ([`ebc92ac`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/ebc92ac31b683107494c0badea2144e5919ed20b))
+* Test new release pipeline ([`8900ab5`](https://github.com/AresSC2/cython-extensions-sc2/commit/8900ab53e89fb996ca4e34238e40c5abb955f17b))
 
 ### Fix
-* Build ([`1573d3b`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/1573d3b0550d1a5c7e546922d5e6810e284ceed8))
+* Semantic-release/exec@v1 ([`92d39be`](https://github.com/AresSC2/cython-extensions-sc2/commit/92d39bea03175c9e045423a942294756b3d5ccd7))
+
+## v0.1.0 (2024-02-02)
+### Feature
+* Reorganise code and user friendly import ([`281588d`](https://github.com/AresSC2/cython-extensions-sc2/commit/281588de572dfee0c3f51a771053ac210108993d))
+* Updated notebooks to work with burnysc2 ([`d85d24d`](https://github.com/AresSC2/cython-extensions-sc2/commit/d85d24d07bea11fea8b599b2f51005b9f1881404))
+* Add unit data and turn data dicts ([`7656c0f`](https://github.com/AresSC2/cython-extensions-sc2/commit/7656c0f13247245d0cb18dcd5f8818cf991487c1))
+* Inital cython files and compile process ([`a98c722`](https://github.com/AresSC2/cython-extensions-sc2/commit/a98c722df9f36a377bba9f6a94c10d31fa5d8d8c))
+
+### Documentation
+* Initial docs setup ([`36a1411`](https://github.com/AresSC2/cython-extensions-sc2/commit/36a14119ea47f5434cda6e5c39a7d2de4a90fcb2))

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cython-extensions-sc2"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["Tom Kerr <tomkerrdev@gmail.com>"]
 readme = "README.md"
@@ -16,6 +16,8 @@ line-profiler = "^4.1.2"
 matplotlib = "^3.8.2"
 numpy = "^1.26.3"
 burnysc2 = "^6.5.0"
+black = "^24.1.1"
+isort = "^5.13.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.2.1"
@@ -61,6 +63,11 @@ version_source = "tag"
 commit_version_number = true # required for version_source = "tag"
 tag_commit = true
 upload_to_pypi = false
-upload_to_release = false
+upload_to_release = true
 hvcs = "github"
 commit_message = "{version} [skip ci]" # skip triggering ci pipelines for version commits
+build_command = "pip install poetry && poetry build"
+
+[tool.isort]
+profile = "black"
+
