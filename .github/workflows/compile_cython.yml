@@ -90,9 +90,9 @@ jobs:
             cython_extensions
       - name: Make wheel
         run: poetry build
-      - name: Store binary wheel
+      - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: python-package-distributions
-          path: dist
+          name: cibw-wheels-${{ matrix.os }}-${{ matrix.python-version }}
+          path: wheelhouse/*.whl
 
