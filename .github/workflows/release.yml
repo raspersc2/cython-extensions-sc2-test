@@ -67,17 +67,18 @@ jobs:
       - name: Install poetry
         run: pipx install poetry
       # set-up python with cache
-      - name: Setup Python 3.11
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: ${{ matrix.python-version }}
           cache: 'poetry'
       # install requirements
       - name: Install requirements
         run: poetry install --with dev
-      - run: poetry config repositories.test-pypi https://test.pypi.org/legacy/
-      - run: poetry config pypi-token.pypi "${{ secrets.PYPI_TEST }}"
-      - name: Publish package
-        run: poetry publish --build
+      - name: Publish package to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_TEST }}
+          repository-url: https://test.pypi.org/legacy/
 
 
