@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.0 (2024-02-06)
+### Feature
+* Build ([`95624e8`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/95624e89eb3df830ac06b1e25afcb7f41a5ac7c1))
+
 ## v0.5.0 (2024-02-06)
 ### Feature
 * Build ([`9cc4d3e`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/9cc4d3efced208d443ea6c13e9eacdd47279760b))
