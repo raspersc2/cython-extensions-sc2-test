@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.2.0 (2024-02-06)
+### Feature
+* Build ([`25c35cb`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/25c35cb29df7efcd6817b84fad3014c22ee75d65))
+* Build ([`fb85ba1`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/fb85ba16a549b9418326ef2a3ca3961b287c92ee))
+
 ## v0.2.0 (2024-02-03)
 ### Feature
 * Test new release pipeline ([`8900ab5`](https://github.com/AresSC2/cython-extensions-sc2/commit/8900ab53e89fb996ca4e34238e40c5abb955f17b))
