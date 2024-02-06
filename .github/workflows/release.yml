@@ -5,8 +5,13 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
     concurrency: release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, macos-latest, ubuntu-latest ]
+        python-version: [ '3.11' ]
 
     steps:
       # check-out repo
