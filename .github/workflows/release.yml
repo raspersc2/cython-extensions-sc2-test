@@ -75,6 +75,7 @@ jobs:
       # install requirements
       - name: Install requirements
         run: poetry install --with dev
+      - run: poetry config repositories.test-pypi https://test.pypi.org/legacy/
       - run: poetry config pypi-token.pypi "${{ secrets.PYPI_TEST }}"
       - name: Publish package
         run: poetry publish --build
