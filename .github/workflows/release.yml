@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-latest, macos-latest, ubuntu-latest ]
+        os: [ ubuntu-latest ]
         python-version: [ '3.11' ]
 
     steps:
@@ -32,7 +32,7 @@ jobs:
           cache: 'poetry'
       # install requirements
       - name: Install requirements
-        run: poetry install --with semver,dev --no-root
+        run: poetry install --only semver --no-root
       # semantic release
       - name: Python Semantic Release
         env:
@@ -44,3 +44,39 @@ jobs:
           git config --global user.email "github-actions@github.com"
           # run semantic-release
           poetry run semantic-release publish -v DEBUG -D commit_author="github-actions <action@github.com>"
+
+  upload_to_pipi:
+    name: Upload to Pipi
+    needs: release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        python-version: ['3.11']
+
+    steps:
+      # check-out repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_TOKEN_TEST }}
+          fetch-depth: 0
+      # install poetry
+      - name: Install poetry
+        run: pipx install poetry
+      # set-up python with cache
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'poetry'
+      # install requirements
+      - name: Install requirements
+        run: poetry install --with dev
+      - run: poetry config pypi-token.pypi "${{ secrets.PYPI_TEST }}"
+      - name: Publish package
+        run: poetry publish --build
+
+
