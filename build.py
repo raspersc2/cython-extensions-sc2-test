@@ -23,6 +23,7 @@ def build():
             name="cython_extensions.bootstrap",
             sources=source_files,
             include_dirs=include_dirs,
+            optional=os.environ.get('CIBUILDWHEEL', '0') != '1'
         ),
         compiler_directives={"binding": True, "language_level": 3},
     )
