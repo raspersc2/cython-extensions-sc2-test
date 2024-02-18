@@ -12,7 +12,6 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         python-version: [ '3.11' ]
-        arch: ['arm64', 'arm32']  # Add ARM architectures to the matrix
 
     steps:
       # check-out repo
