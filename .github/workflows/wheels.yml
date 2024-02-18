@@ -75,6 +75,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
+          name: cibw-wheels-${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ matrix.cibw_build }}
           path: wheelhouse/*.whl
 
   build_wheels_linux:
@@ -115,6 +116,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
+          name: cibw-wheels-${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ matrix.cibw_build }}
           path: wheelhouse/*.whl
 
 #  build_wheels_macos:
