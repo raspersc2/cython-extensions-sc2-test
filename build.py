@@ -12,16 +12,6 @@ libraries = []
 
 
 def build():
-    if os.name == "nt":  # Windows
-        extra_compile_args = [
-            "/O2",
-        ]
-    else:  # UNIX-based systems
-        extra_compile_args = [
-            "-O3",
-            "-Werror",
-        ]
-    extra_compile_args.append("-UNDEBUG")  # Cython disables asserts by default.
 
     source_files = []
     for root, directories, files in os.walk("cython_extensions"):
@@ -33,8 +23,7 @@ def build():
         Extension(
             name="cython_extensions.bootstrap",
             sources=source_files,
-            include_dirs=include_dirs,
-            extra_compile_args=extra_compile_args,
+            include_dirs=include_dirs
         ),
         compiler_directives={"binding": True, "language_level": 3},
     )
