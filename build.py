@@ -20,9 +20,6 @@ def build():
         extra_compile_args = [
             "-O3",
             "-Werror",
-            "-Wno-unreachable-code-fallthrough",
-            "-Wno-deprecated-declarations",
-            "-Wno-parentheses-equality",
         ]
     extra_compile_args.append("-UNDEBUG")  # Cython disables asserts by default.
 
