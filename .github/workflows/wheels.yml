@@ -13,12 +13,12 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up python 3.11
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
@@ -55,12 +55,12 @@ jobs:
           (Get-ItemProperty "HKLM:System\CurrentControlSet\Control\FileSystem").LongPathsEnabled
 
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -69,17 +69,13 @@ jobs:
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
-        with:
-          platform: win32
-          architectures: ${{ matrix.cibw_archs }}
-          build: ${{ matrix.cibw_build }}
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ strategy.job-index }}
+          name: cibw-wheels-${{ matrix.os }}-${{ matrix.cibw_archs }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
   build_wheels_linux:
@@ -90,11 +86,11 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         cibw_build: ["cp310-*", "cp311-*", "cp312-*"]
-        cibw_archs: ["x86_64", "i686", "aarch64", "ppc64le"]
+        cibw_archs: ["x86_64", "i686", "aarch64"] # "ppc64le" not working
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -105,7 +101,7 @@ jobs:
           platforms: all
 
       - name: Set up python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -120,7 +116,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ strategy.job-index }}
+          name: cibw-wheels-${{ matrix.os }}-${{ matrix.cibw_archs }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
 #  build_wheels_macos:
@@ -136,12 +132,12 @@ jobs:
 #      SYSTEM_VERSION_COMPAT: 0 # https://github.com/actions/setup-python/issues/469#issuecomment-1192522949
 #    steps:
 #      - name: Check out repository
-#        uses: actions/checkout@v3
+#        uses: actions/checkout@v4
 #        with:
 #          fetch-depth: 0
 #
 #      - name: Set up python 3.12
-#        uses: actions/setup-python@v4
+#        uses: actions/setup-python@v5
 #        with:
 #          python-version: "3.12"
 #
