@@ -23,7 +23,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install poetry
-        uses: snok/install-poetry@v1
+        run: pipx install poetry
 
       - name: Build sdist
         run: |
@@ -65,18 +65,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install poetry
-        uses: snok/install-poetry@v1
-        with:
-          virtualenvs-create: false
-          virtualenvs-in-project: false
-          installer-parallel: false # Currently there seems to be some race-condition in windows
+        run: pipx install poetry
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
-          CIBW_BEFORE_BUILD: poetry install
 
       - uses: actions/upload-artifact@v4
         with:
@@ -110,17 +105,13 @@ jobs:
           python-version: "3.12"
 
       - name: Install poetry
-        uses: snok/install-poetry@v1
-        with:
-          virtualenvs-create: false
-          virtualenvs-in-project: false
+        run: pipx install poetry
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
-          CIBW_BEFORE_BUILD: poetry install
 
       - uses: actions/upload-artifact@v4
         with:
@@ -149,10 +140,7 @@ jobs:
 #          python-version: "3.12"
 #
 #      - name: Install poetry
-#        uses: snok/install-poetry@v1
-#        with:
-#          virtualenvs-create: false
-#          virtualenvs-in-project: false
+#        run: pipx install poetry
 #
 #      - name: Build wheels
 #        uses: pypa/cibuildwheel@v2.16.2
@@ -182,6 +170,9 @@ jobs:
 #      - uses: actions/setup-python@v4
 #        with:
 #          python-version: "3.12"
+#
+#      - name: Install poetry
+#        run: pipx install poetry
 #
 #      - name: Build wheels
 #        uses: pypa/cibuildwheel@v2.16.2
