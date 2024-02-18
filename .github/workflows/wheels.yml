@@ -69,13 +69,17 @@ jobs:
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
+        with:
+          platform: win32
+          architectures: ${{ matrix.cibw_archs }}
+          build: ${{ matrix.cibw_build }}
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ matrix.cibw_build }}
+          name: cibw-wheels-${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
   build_wheels_linux:
@@ -116,7 +120,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ matrix.cibw_build }}
+          name: cibw-wheels-${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
 #  build_wheels_macos:
