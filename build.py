@@ -12,7 +12,6 @@ libraries = []
 
 
 def build():
-
     source_files = []
     for root, directories, files in os.walk("cython_extensions"):
         for file in files:
@@ -23,7 +22,7 @@ def build():
         Extension(
             name="cython_extensions.bootstrap",
             sources=source_files,
-            include_dirs=include_dirs
+            include_dirs=include_dirs,
         ),
         compiler_directives={"binding": True, "language_level": 3},
     )

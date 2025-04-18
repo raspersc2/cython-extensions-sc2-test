@@ -49,6 +49,10 @@ cpdef (double, double) cy_towards((double, double) start_pos, (double, double) t
         (double, double) vector, displacement, new_pos, normalized_vector
         double magnitude
 
+    # Same points. Prevent division by 0 when magnitude = 0
+    if start_pos == target_pos:
+        return target_pos
+        
     # Calculate the vector between the points
     vector = (target_pos[0] - start_pos[0], target_pos[1] - start_pos[1])
 
@@ -200,13 +204,13 @@ cpdef ((float, float, float), (float, float)) cy_find_correct_line(points, base_
 
     return line, points[idx]
 
-cpdef (float, float) cy_translate_point_along_line((float, float) point, float A_value, float distance):
+cpdef (float, float) cy_translate_point_along_line((float, float) point, float a_value, float distance):
     cdef:
         float angle
         float x_offset
         float y_offset
 
-    angle = atan2(1, -A_value)
+    angle = atan2(1, -a_value)
     x_offset = distance * cos(angle)
     y_offset = distance * sin(angle)
 
