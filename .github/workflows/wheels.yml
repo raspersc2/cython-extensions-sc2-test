@@ -29,9 +29,11 @@ jobs:
         run: |
           poetry self add "poetry-dynamic-versioning[plugin]"
           poetry build --format=sdist
-
+      - name: List dist contents
+        run: ls -lh dist/
       - uses: actions/upload-artifact@v4
         with:
+          name: sdist-${{ matrix.os }}
           path: dist/*.tar.gz
 
   build_wheels_windows:
@@ -64,10 +66,12 @@ jobs:
         # build a wheel while we are here for later (pipi) and upload artifact
         - name: Make wheel
           run: poetry build
+        - name: List dist contents
+          run: ls -lh dist/
         - name: Upload wheels
           uses: actions/upload-artifact@v4
           with:
-            name: cibw-wheels-${{ matrix.os }}-${{ matrix.python-version }}
+            name: wheels-windows-${{ matrix.python-version }}
             path: dist/*.whl
 #      - name: "Set environment variables (Windows)"
 #        shell: pwsh
@@ -134,10 +138,11 @@ jobs:
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
-
+      - name: List dist contents
+        run: ls -lh dist/
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}-${{ matrix.cibw_archs }}-${{ strategy.job-index }}
+          name: wheels-linux-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}
           path: wheelhouse/*.whl
 
   build_wheels_macos:
@@ -170,10 +175,11 @@ jobs:
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
-
+      - name: List dist contents
+        run: ls -lh dist/
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}-${{ matrix.cibw_archs }}-${{ strategy.job-index }}
+          name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}
           path: wheelhouse/*.whl
 
   build_wheels_macos_arm64:
@@ -226,8 +232,9 @@ jobs:
             delocate-listdeps --all {dest_dir}/$WHEEL_SIMPLE_FILENAME
 
             echo "DONE."
-
+      - name: List dist contents
+        run: ls -lh dist/
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}-${{ matrix.cibw_archs }}-${{ strategy.job-index }}
+          name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}
           path: ./wheelhouse/*.whl

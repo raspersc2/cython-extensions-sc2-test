@@ -58,12 +58,14 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_TOKEN_TEST }}
           fetch-depth: 0
-      - name: Download all the dists
+      - name: Download all wheels
         uses: actions/download-artifact@v4
         with:
-          pattern: cibw-*
+          pattern: wheels-*
           path: dist
           merge-multiple: true
+      - name: List dist contents after download
+        run: ls -lh dist/
       # Debug to verify version
       - name: Debug Version
         run: echo "Version is ${{ env.VERSION }}"
