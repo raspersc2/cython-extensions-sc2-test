@@ -49,6 +49,8 @@ jobs:
         python-version: ['3.12']
 
     steps:
+      - name: Clean dist directory
+        run: rm -rf dist && mkdir dist
       # check-out repo
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -65,9 +67,9 @@ jobs:
       # Debug to verify version
       - name: Debug Version
         run: echo "Version is ${{ env.VERSION }}"
+      - name: Check built distributions
+        run: pip install twine && twine check dist/*
       - name: Publish package to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_TEST }}
-
-
