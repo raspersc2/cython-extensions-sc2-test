@@ -49,8 +49,8 @@ jobs:
       matrix:
         os: [windows-latest]
         python-version: ['3.10', '3.11', '3.12']
-#        cibw_build: ["cp310-*", "cp311-*", "cp312-*"]
-#        cibw_archs: ["AMD64", "x86", "ARM64"]
+        cibw_build: ["cp310-*", "cp311-*", "cp312-*"]
+        cibw_archs: ["AMD64", "x86", "ARM64"]
 
     steps:
         # install poetry
@@ -81,7 +81,7 @@ jobs:
         - name: Upload wheels
           uses: actions/upload-artifact@v4
           with:
-            name: wheels-windows-${{ matrix.python-version }}
+            name: wheels-windows-${{ matrix.python-version }}-${{ matrix.cibw_build.replace('*', '') }}
             path: dist/*.whl
 #      - name: "Set environment variables (Windows)"
 #        shell: pwsh
@@ -157,7 +157,7 @@ jobs:
         shell: pwsh
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-linux-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}
+          name: wheels-linux-${{ matrix.cibw_archs }}-${{ matrix.cibw_build.replace('*', '') }}
           path: wheelhouse/*.whl
 
   build_wheels_macos:
@@ -199,7 +199,7 @@ jobs:
         shell: pwsh
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}
+          name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build.replace('*', '') }}
           path: wheelhouse/*.whl
 
   build_wheels_macos_arm64:
@@ -261,5 +261,5 @@ jobs:
         shell: pwsh
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}
+          name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build.replace('*', '') }}
           path: ./wheelhouse/*.whl
