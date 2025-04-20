@@ -29,8 +29,13 @@ jobs:
         run: |
           poetry self add "poetry-dynamic-versioning[plugin]"
           poetry build --format=sdist
-      - name: List dist contents
-        run: ls -lh dist/
+      - name: List dist contents (Unix)
+        if: runner.os != 'Windows'
+        run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
+      - name: List dist contents (Windows)
+        if: runner.os == 'Windows'
+        run: Get-ChildItem dist
+        shell: pwsh
       - uses: actions/upload-artifact@v4
         with:
           name: sdist-${{ matrix.os }}
@@ -66,8 +71,13 @@ jobs:
         # build a wheel while we are here for later (pipi) and upload artifact
         - name: Make wheel
           run: poetry build
-        - name: List dist contents
-          run: ls -lh dist/
+        - name: List dist contents (Unix)
+          if: runner.os != 'Windows'
+          run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
+        - name: List dist contents (Windows)
+          if: runner.os == 'Windows'
+          run: Get-ChildItem dist
+          shell: pwsh
         - name: Upload wheels
           uses: actions/upload-artifact@v4
           with:
@@ -138,8 +148,13 @@ jobs:
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
-      - name: List dist contents
-        run: ls -lh dist/
+      - name: List dist contents (Unix)
+        if: runner.os != 'Windows'
+        run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
+      - name: List dist contents (Windows)
+        if: runner.os == 'Windows'
+        run: Get-ChildItem dist
+        shell: pwsh
       - uses: actions/upload-artifact@v4
         with:
           name: wheels-linux-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}
@@ -175,8 +190,13 @@ jobs:
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
-      - name: List dist contents
-        run: ls -lh dist/
+      - name: List dist contents (Unix)
+        if: runner.os != 'Windows'
+        run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
+      - name: List dist contents (Windows)
+        if: runner.os == 'Windows'
+        run: Get-ChildItem dist
+        shell: pwsh
       - uses: actions/upload-artifact@v4
         with:
           name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}
@@ -232,8 +252,13 @@ jobs:
             delocate-listdeps --all {dest_dir}/$WHEEL_SIMPLE_FILENAME
 
             echo "DONE."
-      - name: List dist contents
-        run: ls -lh dist/
+      - name: List dist contents (Unix)
+        if: runner.os != 'Windows'
+        run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
+      - name: List dist contents (Windows)
+        if: runner.os == 'Windows'
+        run: Get-ChildItem dist
+        shell: pwsh
       - uses: actions/upload-artifact@v4
         with:
           name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}
