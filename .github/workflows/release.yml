@@ -6,63 +6,33 @@ on:
 jobs:
   release:
     concurrency: release
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-latest ]
-        python-version: [ '3.12' ]
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # This action uses Python Semantic Release v8
-      - name: Python Semantic Release
-        id: release
-        uses: python-semantic-release/python-semantic-release@v9.15.2
-        with:
-          github_token: ${{ secrets.GH_TOKEN_TEST }}
-          root_options: "-vv"
+      # Step 1: Bump version, commit, tag (no GitHub release yet)
+      - name: Semantic Release (version only)
+        run: |
+          python3 -m pip install python-semantic-release==9.15.2
+          semantic-release version --no-push --no-upload
+          git push --follow-tags
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
 
-      - name: Publish package distributions to GitHub Releases
-        uses: python-semantic-release/publish-action@v9.15.2
-        if: steps.release.outputs.released == 'true'
-        with:
-          github_token: ${{ secrets.GH_TOKEN_TEST }}
-
-      # Get the latest version
-      - name: Get Latest Version
-        run: echo "VERSION=$(poetry version -s)" >> $GITHUB_ENV
-
-  upload_to_pipi:
-    name: Upload to Pipi
-    needs: release
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-        python-version: ['3.12']
-
-    steps:
-      - name: Clean dist directory
-        run: rm -rf dist && mkdir dist
-      # check-out repo
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.GH_TOKEN_TEST }}
-          fetch-depth: 0
+      # Step 2: Checkout new tag
       - name: Checkout repository at latest tag
         run: |
           git fetch --tags
           LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
           git checkout $LATEST_TAG
+
+      # Step 3: Build wheels/sdist (reuse your wheel artifact download if needed)
+      - name: Clean dist directory
+        run: rm -rf dist && mkdir dist
       - name: Download all wheels
         uses: actions/download-artifact@v4
         with:
@@ -71,9 +41,6 @@ jobs:
           merge-multiple: true
       - name: List dist contents after download
         run: ls -lh dist/
-      # Debug to verify version
-      - name: Debug Version
-        run: echo "Version is ${{ env.VERSION }}"
       - name: Check built distributions
         run: pip install twine && twine check dist/*
       - name: Publish package to TestPyPI
@@ -81,3 +48,11 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
           password: ${{ secrets.PYPI_TEST }}
+
+      # Step 4: Only create GitHub release if PyPI upload succeeded
+      - name: Semantic Release (publish only)
+        if: success()
+        run: |
+          semantic-release publish --no-version
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
