@@ -1,4 +1,4 @@
-__version__ = "0.7.5"
+__version__ = "0.8.0"
 
 # bootstrap is the only module which
 # can be loaded with default Python-machinery
