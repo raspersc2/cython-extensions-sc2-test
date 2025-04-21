@@ -58,6 +58,11 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_TOKEN_TEST }}
           fetch-depth: 0
+      - name: Checkout repository at latest tag
+        run: |
+          git fetch --tags
+          LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          git checkout $LATEST_TAG
       - name: Download all wheels
         uses: actions/download-artifact@v4
         with:
