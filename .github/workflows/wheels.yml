@@ -36,9 +36,14 @@ jobs:
         if: runner.os == 'Windows'
         run: Get-ChildItem dist
         shell: pwsh
+      - name: Sanitize artifact name
+        id: sanitize
+        run: |
+          echo "ARTIFACT_NAME=sdist-${{ matrix.os }}" | sed 's/\*//g' >> $GITHUB_ENV
+        shell: bash
       - uses: actions/upload-artifact@v4
         with:
-          name: sdist-${{ matrix.os }}
+          name: ${{ env.ARTIFACT_NAME }}
           path: dist/*.tar.gz
 
   build_wheels_windows:
@@ -78,10 +83,15 @@ jobs:
           if: runner.os == 'Windows'
           run: Get-ChildItem dist
           shell: pwsh
+        - name: Sanitize artifact name
+          id: sanitize
+          run: |
+            echo "ARTIFACT_NAME=wheels-windows-${{ matrix.python-version }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
+          shell: bash
         - name: Upload wheels
           uses: actions/upload-artifact@v4
           with:
-            name: wheels-windows-${{ matrix.python-version }}-${{ matrix.cibw_build.replace('*', '') }}
+            name: ${{ env.ARTIFACT_NAME }}
             path: dist/*.whl
 #      - name: "Set environment variables (Windows)"
 #        shell: pwsh
@@ -155,9 +165,14 @@ jobs:
         if: runner.os == 'Windows'
         run: Get-ChildItem dist
         shell: pwsh
+      - name: Sanitize artifact name
+        id: sanitize
+        run: |
+          echo "ARTIFACT_NAME=wheels-linux-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
+        shell: bash
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-linux-${{ matrix.cibw_archs }}-${{ matrix.cibw_build.replace('*', '') }}
+          name: ${{ env.ARTIFACT_NAME }}
           path: wheelhouse/*.whl
 
   build_wheels_macos:
@@ -197,9 +212,14 @@ jobs:
         if: runner.os == 'Windows'
         run: Get-ChildItem dist
         shell: pwsh
+      - name: Sanitize artifact name
+        id: sanitize
+        run: |
+          echo "ARTIFACT_NAME=wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
+        shell: bash
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build.replace('*', '') }}
+          name: ${{ env.ARTIFACT_NAME }}
           path: wheelhouse/*.whl
 
   build_wheels_macos_arm64:
@@ -259,8 +279,12 @@ jobs:
         if: runner.os == 'Windows'
         run: Get-ChildItem dist
         shell: pwsh
+      - name: Sanitize artifact name
+        id: sanitize
+        run: |
+          echo "ARTIFACT_NAME=wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
+        shell: bash
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build.replace('*', '') }}
+          name: ${{ env.ARTIFACT_NAME }}
           path: ./wheelhouse/*.whl
-
