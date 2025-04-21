@@ -86,7 +86,7 @@ jobs:
         - name: Sanitize artifact name
           id: sanitize
           run: |
-            echo "ARTIFACT_NAME=wheels-windows-${{ matrix.python-version }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
+            echo "ARTIFACT_NAME=wheels-windows-${{ matrix.os }}-${{ matrix.cibw_archs }}-${{ matrix.python-version }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
           shell: bash
         - name: Upload wheels
           uses: actions/upload-artifact@v4
@@ -168,7 +168,7 @@ jobs:
       - name: Sanitize artifact name
         id: sanitize
         run: |
-          echo "ARTIFACT_NAME=wheels-linux-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
+          echo "ARTIFACT_NAME=wheels-linux-${{ matrix.os }}-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
         shell: bash
       - uses: actions/upload-artifact@v4
         with:
@@ -215,7 +215,7 @@ jobs:
       - name: Sanitize artifact name
         id: sanitize
         run: |
-          echo "ARTIFACT_NAME=wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
+          echo "ARTIFACT_NAME=wheels-macos-${{ matrix.os }}-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
         shell: bash
       - uses: actions/upload-artifact@v4
         with:
@@ -282,7 +282,7 @@ jobs:
       - name: Sanitize artifact name
         id: sanitize
         run: |
-          echo "ARTIFACT_NAME=wheels-macos-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
+          echo "ARTIFACT_NAME=wheels-macos-${{ matrix.os }}-${{ matrix.cibw_archs }}-${{ matrix.cibw_build }}" | sed 's/\*//g' >> $GITHUB_ENV
         shell: bash
       - uses: actions/upload-artifact@v4
         with:
