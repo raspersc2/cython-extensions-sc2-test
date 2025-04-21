@@ -2,6 +2,10 @@ name: Release
 
 on:
   workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
 
 jobs:
   release:
@@ -12,25 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.tag }}
           fetch-depth: 0
 
-      # Step 1: Bump version, commit, tag (no GitHub release yet)
-      - name: Semantic Release (version only)
-        run: |
-          python3 -m pip install python-semantic-release==9.15.2
-          semantic-release version --no-push
-          git push --follow-tags
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
-
-      # Step 2: Checkout new tag
-      - name: Checkout repository at latest tag
-        run: |
-          git fetch --tags
-          LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
-          git checkout $LATEST_TAG
-
-      # Step 3: Build wheels/sdist (reuse your wheel artifact download if needed)
       - name: Clean dist directory
         run: rm -rf dist && mkdir dist
       - name: Download all wheels
@@ -49,10 +37,10 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
           password: ${{ secrets.PYPI_TEST }}
 
-      # Step 4: Only create GitHub release if PyPI upload succeeded
       - name: Semantic Release (publish only)
         if: success()
         run: |
+          pip install python-semantic-release==9.15.2
           semantic-release publish --no-version
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}

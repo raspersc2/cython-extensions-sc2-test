@@ -12,20 +12,46 @@ jobs:
   call-testing-pipeline:
     name: Testing
     uses: ./.github/workflows/test.yml
+
+  version-bump:
+    name: VersionBump
+    needs: call-testing-pipeline
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.get_tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run semantic-release (version only)
+        run: |
+          pip install python-semantic-release==9.15.2
+          semantic-release version --no-push
+          git push --follow-tags
+      - name: Get latest tag
+        id: get_tag
+        run: echo "tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+
   call-compiling-pipeline:
     name: CompileCython
+    needs: version-bump
     uses: ./.github/workflows/compile_cython.yml
+
   call-wheels-pipeline:
     name: Wheels
     needs:
+      - version-bump
       - call-compiling-pipeline
     uses: ./.github/workflows/wheels.yml
+    with:
+      tag: ${{ needs.version-bump.outputs.tag }}
     secrets: inherit
+
   call-release-pipeline:
     name: Release
     needs:
-      - call-testing-pipeline
+      - version-bump
       - call-compiling-pipeline
       - call-wheels-pipeline
     uses: ./.github/workflows/release.yml
+    with:
+      tag: ${{ needs.version-bump.outputs.tag }}
     secrets: inherit

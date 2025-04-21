@@ -2,6 +2,10 @@ name: Build Wheels
 
 on:
   workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
 
 jobs:
   build_sdist:
@@ -15,6 +19,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.tag }}
           fetch-depth: 0
 
       - name: Set up python 3.12
@@ -62,6 +67,7 @@ jobs:
         - name: Check out repository
           uses: actions/checkout@v4
           with:
+            ref: ${{ inputs.tag }}
             fetch-depth: 0
         - name: Setup Python ${{ matrix.python-version }}
           uses: actions/setup-python@v5
@@ -137,6 +143,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.tag }}
           fetch-depth: 0
 
       - name: Set up QEMU
@@ -190,6 +197,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.tag }}
           fetch-depth: 0
 
       - name: Set up python 3.12
@@ -235,6 +243,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.tag }}
           fetch-depth: 0
 
       - uses: actions/setup-python@v5
