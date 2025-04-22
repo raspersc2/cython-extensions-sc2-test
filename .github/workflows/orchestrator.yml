@@ -25,7 +25,20 @@ jobs:
         run: |
           pip install python-semantic-release==9.15.2
           semantic-release version --no-push
-          git push --follow-tags
+      - name: Push tags and commits
+        run: |
+          git push origin HEAD
+          git push origin --tags
+      - name: Wait for tag to be available
+        run: |
+          TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          for i in {1..10}; do
+            git fetch --tags
+            git rev-parse "refs/tags/$TAG" && exit 0
+            sleep 2
+          done
+          echo "Tag $TAG not found after waiting."
+          exit 1
       - name: Get latest tag
         id: get_tag
         run: echo "tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
