@@ -25,6 +25,8 @@ jobs:
         run: |
           pip install python-semantic-release==9.15.2
           semantic-release version --no-push
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
       - name: Push tags and commits
         run: |
           git push origin HEAD
