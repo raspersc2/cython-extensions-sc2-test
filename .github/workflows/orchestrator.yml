@@ -21,6 +21,14 @@ jobs:
       tag: ${{ steps.get_tag.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+      - name: Show current commit
+        run: |
+          git log -1
+          echo "GITHUB_SHA: $GITHUB_SHA"
+          echo "git rev-parse HEAD: $(git rev-parse HEAD)"
       - name: Run semantic-release (version only)
         run: |
           pip install python-semantic-release==9.15.2
