@@ -35,6 +35,11 @@ jobs:
           semantic-release version --no-push
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
+      - name: Show version changes
+        run: |
+          git status
+          git diff pyproject.toml
+          cat pyproject.toml
       - name: Push tags and commits
         run: |
           git push origin HEAD

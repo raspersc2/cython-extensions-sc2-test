@@ -36,11 +36,4 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
           password: ${{ secrets.PYPI_TEST }}
-
-      - name: Semantic Release (publish only)
-        if: success()
-        run: |
-          pip install python-semantic-release==9.15.2
-          semantic-release publish
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
+      # Remove semantic-release publish step; only build wheels and upload to PyPI/TestPyPI here
