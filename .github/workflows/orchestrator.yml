@@ -29,39 +29,18 @@ jobs:
           git log -1
           echo "GITHUB_SHA: $GITHUB_SHA"
           echo "git rev-parse HEAD: $(git rev-parse HEAD)"
-      - name: Run semantic-release (version only)
-        run: |
-          pip install python-semantic-release==9.21.0
-          semantic-release version --no-push
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
-      - name: Show version changes
-        run: |
-          git status
-          git diff pyproject.toml
-          cat pyproject.toml
-      - name: Push tags and commits
-        run: |
-          git push origin HEAD
-          git push origin --tags
-      - name: Publish GitHub Release
-        run: |
-          semantic-release publish
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
-      - name: Wait for tag to be available
-        run: |
-          TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
-          for i in {1..10}; do
-            git fetch --tags
-            git rev-parse "refs/tags/$TAG" && exit 0
-            sleep 2
-          done
-          echo "Tag $TAG not found after waiting."
-          exit 1
-      - name: Get latest tag
-        id: get_tag
-        run: echo "tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+      - name: Python Semantic Release
+        id: release
+        uses: python-semantic-release/python-semantic-release@v9.21.0
+        with:
+          github_token: ${{ secrets.GH_TOKEN_TEST }}
+          root_options: "-vv"
+
+      - name: Publish package distributions to GitHub Releases
+        uses: python-semantic-release/publish-action@v9.21.0
+        if: steps.release.outputs.released == 'true'
+        with:
+          github_token: ${{ secrets.GH_TOKEN_TEST }}
 
   call-compiling-pipeline:
     name: CompileCython
