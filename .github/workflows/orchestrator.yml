@@ -13,9 +13,16 @@ jobs:
     name: Testing
     uses: ./.github/workflows/test.yml
 
+  call-compiling-pipeline:
+    name: CompileCython
+    needs: call-testing-pipeline
+    uses: ./.github/workflows/compile_cython.yml
+
   version-bump:
     name: VersionBump
-    needs: call-testing-pipeline
+    needs:
+      - call-testing-pipeline
+      - call-compiling-pipeline
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.get_tag.outputs.tag }}
@@ -29,6 +36,10 @@ jobs:
           git log -1
           echo "GITHUB_SHA: $GITHUB_SHA"
           echo "git rev-parse HEAD: $(git rev-parse HEAD)"
+      - name: Download Cython build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./cython_artifacts
       - name: Python Semantic Release
         id: release
         uses: python-semantic-release/python-semantic-release@v9.21.0
@@ -41,11 +52,7 @@ jobs:
         if: steps.release.outputs.released == 'true'
         with:
           github_token: ${{ secrets.GH_TOKEN_TEST }}
-
-  call-compiling-pipeline:
-    name: CompileCython
-    needs: version-bump
-    uses: ./.github/workflows/compile_cython.yml
+          upload_assets: 'cython_artifacts/*.zip'
 
   call-wheels-pipeline:
     name: Wheels
