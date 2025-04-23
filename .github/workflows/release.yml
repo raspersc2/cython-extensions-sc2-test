@@ -41,6 +41,6 @@ jobs:
         if: success()
         run: |
           pip install python-semantic-release==9.15.2
-          semantic-release publish --no-version
+          semantic-release publish
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}

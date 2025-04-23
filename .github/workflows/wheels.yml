@@ -32,7 +32,6 @@ jobs:
 
       - name: Build sdist
         run: |
-          poetry self add "poetry-dynamic-versioning[plugin]"
           poetry build --format=sdist
       - name: List dist contents (Unix)
         if: runner.os != 'Windows'
