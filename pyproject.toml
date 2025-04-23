@@ -1,5 +1,5 @@
 [tool.poetry]
-version = "0.24.0"
+version = "0.25.0"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
@@ -65,7 +65,7 @@ allow_zero_version = true
 no_git_verify = false
 tag_format = "v{version}"
 version_variables = [
-  "pyproject.toml:tool.poetry.version",
+  "pyproject.toml:version",
   "cython_extensions/__init__.py:__version__"
 ]
 
