@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cython-extensions-sc2"
-version = "0.18.0"
+version = "0.19.0"
 description = ""
 authors = ["Tom Kerr <tomkerrdev@gmail.com>"]
 readme = "README.md"
@@ -74,7 +74,11 @@ major_on_zero = true
 allow_zero_version = true
 no_git_verify = false
 tag_format = "v{version}"
-version_variables = ["cython_extensions/__init__.py:__version__", "pyproject.toml:tool.poetry.version"]
+# version_variables = ["cython_extensions/__init__.py:__version__", "pyproject.toml:tool.poetry.version"]
+version_variables = [
+  "pyproject.toml:tool.poetry.version",
+  "cython_extensions/__init__.py:__version__"
+]
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"
