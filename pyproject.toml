@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cython-extensions-sc2"
-version = "0.16.0"
+version = "0.17.0"
 description = ""
 authors = ["Tom Kerr <tomkerrdev@gmail.com>"]
 readme = "README.md"
@@ -36,7 +36,7 @@ mkdocs-material = "^9.0.6"
 mkdocstrings-python = "^1.13.0"
 
 [tool.poetry.group.semver.dependencies]
-python-semantic-release = "9.15.2"
+python-semantic-release = "9.21.0"
 
 [build-system]
 requires = ["poetry-core", "Cython", "numpy", "setuptools"]
