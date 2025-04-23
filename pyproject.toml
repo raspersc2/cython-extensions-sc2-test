@@ -1,5 +1,5 @@
 [tool.poetry]
-version = "0.21.0"
+version = "0.23.0"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
@@ -64,11 +64,10 @@ major_on_zero = true
 allow_zero_version = true
 no_git_verify = false
 tag_format = "v{version}"
-version_variables = ["pyproject.toml:tool.poetry.version"]
-#version_variables = [
-#  "pyproject.toml:tool.poetry.version",
-#  "cython_extensions/__init__.py:__version__"
-#]
+version_variables = [
+  "pyproject.toml:tool.poetry.version",
+  "cython_extensions/__init__.py:__version__"
+]
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"
