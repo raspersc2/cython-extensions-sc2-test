@@ -44,6 +44,12 @@ jobs:
         run: |
           git push origin HEAD
           git push origin --tags
+      - name: Publish GitHub Release
+        run: |
+          pip install python-semantic-release==9.21.0
+          semantic-release publish
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
       - name: Wait for tag to be available
         run: |
           TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
