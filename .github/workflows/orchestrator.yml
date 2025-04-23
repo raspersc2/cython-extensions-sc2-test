@@ -31,7 +31,7 @@ jobs:
           echo "git rev-parse HEAD: $(git rev-parse HEAD)"
       - name: Run semantic-release (version only)
         run: |
-          pip install python-semantic-release==9.15.2
+          pip install python-semantic-release==9.21.0
           semantic-release version --no-push
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
@@ -46,7 +46,6 @@ jobs:
           git push origin --tags
       - name: Publish GitHub Release
         run: |
-          pip install python-semantic-release==9.21.0
           semantic-release publish
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
