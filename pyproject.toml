@@ -1,15 +1,5 @@
 [tool.poetry]
 version = "0.21.0"
-name = "cython-extensions-sc2"
-description = ""
-authors = ["Tom Kerr <tomkerrdev@gmail.com>"]
-readme = "README.md"
-packages = [{include = "cython_extensions"}]
-# include = ["cython_extensions/*.so", "cython_extensions/*.pyd"]
- include = [
-   { path = "cython_extensions/*.so", format = "wheel" },
-   { path = "cython_extensions/*.pyd", format = "wheel" }
- ]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
