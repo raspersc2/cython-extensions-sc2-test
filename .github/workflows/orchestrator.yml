@@ -56,6 +56,13 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN_TEST }}
           upload_assets: 'cython_artifacts/**/*.zip'
 
+      - name: Upload Cython zips to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: cython_artifacts/**/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
+
   call-wheels-pipeline:
     name: Wheels
     needs:
