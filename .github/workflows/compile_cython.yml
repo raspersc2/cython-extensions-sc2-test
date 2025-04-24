@@ -32,11 +32,12 @@ jobs:
       - name: Install requirements and build extension
         run: |
           poetry install --with dev
+      - name: Rename ladder binary before upload
+        run: mv cython_extensions/bootstrap.cpython-312-x86_64-linux-gnu.so cython_extensions/ladder_bootstrap.cpython-312-x86_64-linux-gnu.so
       - uses: actions/upload-artifact@v4
         with:
           name: ladder_binary
-          path: |
-            cython_extensions/*.so
+          path: cython_extensions/ladder_bootstrap.cpython-312-x86_64-linux-gnu.so
   build:
     name: Compile Cython
     needs: build_ladder_binary
@@ -65,18 +66,18 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'
       # create folders here for uploading to github release
-      - name: Get linux binary
+      - name: Get ladder binary
         uses: actions/download-artifact@v4
         with:
           name: ladder_binary
           path: cython_extensions
-      - name: Download ladder binary
-        uses: actions/download-artifact@v4
-        with:
-          name: ladder_binary
-          path: cython_extensions
-      - name: List cython_extensions contents
+      - name: List cython_extensions contents before zipping
         run: ls -l cython_extensions
+        if: runner.os != 'Windows'
+      - name: List cython_extensions contents before zipping (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Get-ChildItem cython_extensions
       - name: Delete unwanted files
         run: |
           find cython_extensions -name "*.c" -print0 | xargs -0 rm -f
@@ -85,25 +86,6 @@ jobs:
         run: |
           Remove-Item -Path .\cython_extensions\*.c -Force
         if: matrix.os == 'windows-latest'
-      # After build, copy OS-specific binary into cython_extensions before zipping
-      - name: Rename ladder binary (Linux/macOS)
-        if: runner.os != 'Windows'
-        run: |
-          if [ -f cython_extensions/bootstrap.cpython-312-x86_64-linux-gnu.so ]; then \
-            mv cython_extensions/bootstrap.cpython-312-x86_64-linux-gnu.so cython_extensions/ladder_bootstrap.cpython-312-x86_64-linux-gnu.so; \
-          fi
-      - name: Copy OS-specific binary to cython_extensions (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          Copy-Item -Path cython_extensions\*.pyd -Destination cython_extensions\
-      - name: List cython_extensions contents before zipping
-        run: ls -l cython_extensions
-        if: runner.os != 'Windows'
-      - name: List cython_extensions contents before zipping (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: Get-ChildItem cython_extensions
       - name: Zip Cython extension (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
@@ -117,8 +99,3 @@ jobs:
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
           path: ${{ matrix.os }}_python${{ matrix.python-version }}.zip
-#      - uses: actions/upload-artifact@v4
-#        with:
-#          name: ${{ matrix.os }}_python${{ matrix.python-version }}
-#          path: |
-#            cython_extensions
