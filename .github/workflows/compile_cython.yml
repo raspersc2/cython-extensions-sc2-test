@@ -85,6 +85,23 @@ jobs:
         run: |
           Remove-Item -Path .\cython_extensions\*.c -Force
         if: matrix.os == 'windows-latest'
+      # After build, copy OS-specific binary into cython_extensions before zipping
+      - name: Copy OS-specific binary to cython_extensions (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          cp cython_extensions/*.so cython_extensions/
+      - name: Copy OS-specific binary to cython_extensions (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Copy-Item -Path cython_extensions\*.pyd -Destination cython_extensions\
+      - name: List cython_extensions contents before zipping
+        run: ls -l cython_extensions
+        if: runner.os != 'Windows'
+      - name: List cython_extensions contents before zipping (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Get-ChildItem cython_extensions
       - name: Zip Cython extension (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
