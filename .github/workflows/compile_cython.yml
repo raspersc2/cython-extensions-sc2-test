@@ -32,12 +32,10 @@ jobs:
       - name: Install requirements and build extension
         run: |
           poetry install --with dev
-      - name: Rename ladder binary before upload
-        run: mv cython_extensions/bootstrap.cpython-312-x86_64-linux-gnu.so cython_extensions/ladder_bootstrap.cpython-312-x86_64-linux-gnu.so
       - uses: actions/upload-artifact@v4
         with:
           name: ladder_binary
-          path: cython_extensions/ladder_bootstrap.cpython-312-x86_64-linux-gnu.so
+          path: cython_extensions/bootstrap.cpython-312-x86_64-linux-gnu.so
   build:
     name: Compile Cython
     needs: build_ladder_binary
@@ -66,7 +64,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'
       # create folders here for uploading to github release
-      - name: Get ladder binary
+      - name: Install requirements and build extension
+        run: |
+          poetry install --with dev
+      # Only download ladder binary for non-linux builds
+      - name: Download ladder binary (for Mac/Win only)
+        if: matrix.os != 'ubuntu-latest'
         uses: actions/download-artifact@v4
         with:
           name: ladder_binary
@@ -86,6 +89,8 @@ jobs:
         run: |
           Remove-Item -Path .\cython_extensions\*.c -Force
         if: matrix.os == 'windows-latest'
+      - name: Debug listing before zipping
+        run: ls -l cython_extensions
       - name: Zip Cython extension (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
