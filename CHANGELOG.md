@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.30.0 (2025-04-24)
+
+### Features
+
+- Workflow update
+  ([`357b801`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/357b8019772f86a828e59d1f702533e4c3e85f86))
+
+
 ## v0.29.0 (2025-04-24)
 
 ### Features
