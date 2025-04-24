@@ -8,7 +8,12 @@ on:
 
 jobs:
   Testing:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, macos-latest, ubuntu-latest ]
+        python-version: [ '3.10', '3.11', '3.12', '3.13' ]
     steps:
       # check-out repo
       - name: Checkout repository
@@ -19,10 +24,10 @@ jobs:
       - name: Install poetry
         run: pipx install poetry
       # set-up python with cache
-      - name: Setup Python 3.12
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python-version }}
           cache: 'poetry'
       # install requirements (including dev dependencies)
       - name: Install requirements
@@ -37,12 +42,3 @@ jobs:
         run: |
           set -o pipefail
           poetry run make unit-tests-cov-fail
-      # add pytest coverage report to PR
-      - name: Pytest coverage comment
-        if: ${{ success() && github.event_name == 'pull_request' }}
-        id: coverageComment
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          title: Coverage Report
-          pytest-coverage-path: pytest-coverage.txt
-          junitxml-path: pytest.xml
