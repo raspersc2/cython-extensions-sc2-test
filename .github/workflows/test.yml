@@ -32,3 +32,17 @@ jobs:
         run: |
           set -o pipefail
           poetry run make unit-tests
+
+      - name: Run unit-tests coverage
+        run: |
+          set -o pipefail
+          poetry run make unit-tests-cov-fail
+      # add pytest coverage report to PR
+      - name: Pytest coverage comment
+        if: ${{ success() && github.event_name == 'pull_request' }}
+        id: coverageComment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          title: Coverage Report
+          pytest-coverage-path: pytest-coverage.txt
+          junitxml-path: pytest.xml
