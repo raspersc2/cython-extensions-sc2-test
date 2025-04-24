@@ -64,6 +64,7 @@ jobs:
         with:
           files: cython_artifacts/**/*.zip
           tag_name: ${{ steps.get_tag.outputs.tag }}
+          update_existing: true
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
 
