@@ -56,10 +56,14 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN_TEST }}
           upload_assets: 'cython_artifacts/**/*.zip'
 
+      - name: Get latest tag
+        id: get_tag
+        run: echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
       - name: Upload Cython zips to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: cython_artifacts/**/*.zip
+          tag_name: ${{ steps.get_tag.outputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_TEST }}
 
