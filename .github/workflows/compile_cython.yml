@@ -78,7 +78,6 @@ jobs:
         run: |
           Remove-Item -Path .\cython_extensions\*.c -Force
         if: matrix.os == 'windows-latest'
-      - run: mkdir tmp-dir && mv cython_extensions tmp-dir/ && mv tmp-dir cython_extensions
       - name: Zip Cython extension (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
@@ -87,7 +86,7 @@ jobs:
       - name: Zip Cython extension (Unix)
         if: runner.os != 'Windows'
         run: |
-          zip -r ${{ matrix.os }}_python${{ matrix.python-version }}.zip cython_extensions/
+          zip -r ${{ matrix.os }}_python${{ matrix.python-version }}.zip cython_extensions
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}_python${{ matrix.python-version }}
