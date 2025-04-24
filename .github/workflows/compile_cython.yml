@@ -86,10 +86,12 @@ jobs:
           Remove-Item -Path .\cython_extensions\*.c -Force
         if: matrix.os == 'windows-latest'
       # After build, copy OS-specific binary into cython_extensions before zipping
-      - name: Copy OS-specific binary to cython_extensions (Linux/macOS)
+      - name: Rename ladder binary (Linux/macOS)
         if: runner.os != 'Windows'
         run: |
-          cp cython_extensions/*.so cython_extensions/
+          if [ -f cython_extensions/bootstrap.cpython-312-x86_64-linux-gnu.so ]; then \
+            mv cython_extensions/bootstrap.cpython-312-x86_64-linux-gnu.so cython_extensions/ladder_bootstrap.cpython-312-x86_64-linux-gnu.so; \
+          fi
       - name: Copy OS-specific binary to cython_extensions (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
