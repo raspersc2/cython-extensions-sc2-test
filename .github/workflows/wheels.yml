@@ -58,8 +58,8 @@ jobs:
       matrix:
         os: [windows-latest]
         python-version: ['3.10', '3.11', '3.12', '3.13']
-        cibw_build: ["cp310-*", "cp311-*", "cp312-*", "cp313-*"]
-        cibw_archs: ["AMD64", "x86", "ARM64"]
+#        cibw_build: ["cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+#        cibw_archs: ["AMD64", "x86", "ARM64"]
 
     steps:
         # install poetry
@@ -160,7 +160,7 @@ jobs:
         run: pipx install poetry
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.5
+        uses: pypa/cibuildwheel@v2.23.2
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
@@ -191,7 +191,9 @@ jobs:
         cibw_build: ["cp310-*", "cp311-*", "cp312-*", "cp313-*"]
         cibw_archs: ["x86_64"]
     env:
-      SYSTEM_VERSION_COMPAT: 0 # https://github.com/actions/setup-python/issues/469#issuecomment-1192522949
+      SYSTEM_VERSION_COMPAT: 0
+      CIBW_ARCHS_MACOS: ${{ matrix.cibw_archs }}
+      # CIBW_ENVIRONMENT_MACOS: "ARCHFLAGS='-arch x86_64'"  # Uncomment if you have C extensions
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -208,7 +210,7 @@ jobs:
         run: pipx install poetry
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.5
+        uses: pypa/cibuildwheel@v2.23.2
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}

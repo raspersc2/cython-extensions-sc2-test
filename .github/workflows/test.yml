@@ -12,7 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-latest, macos-latest, ubuntu-latest ]
+        # TODO: add windows (doesn't support make file)
+        os: [ macos-latest, ubuntu-latest ]
         python-version: [ '3.10', '3.11', '3.12', '3.13' ]
     steps:
       # check-out repo
