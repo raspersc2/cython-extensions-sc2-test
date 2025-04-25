@@ -208,9 +208,6 @@ jobs:
           python-version: "3.12"
           architecture: "x64"
 
-      - name: Install arch
-        run: brew install arch
-
       - name: Install poetry
         run: pipx install poetry
 
@@ -219,6 +216,10 @@ jobs:
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
+          SYSTEM_VERSION_COMPAT: 0
+          CIBW_ENVIRONMENT_MACOS: "ARCHFLAGS='-arch x86_64' _PYTHON_HOST_PLATFORM=macosx-10.9-x86_64 _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__darwin_darwin"
+          CIBW_BEFORE_ALL: "export SYSTEM_VERSION_COMPAT=0"
+
       - name: List dist contents (Unix)
         if: runner.os != 'Windows'
         run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
