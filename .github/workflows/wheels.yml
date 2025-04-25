@@ -183,11 +183,11 @@ jobs:
 
   build_wheels_macos:
     name: "${{ matrix.os }} ${{ matrix.cibw_archs }} ${{ matrix.cibw_build }}"
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-13
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest]
+        os: [macos-13]
         cibw_build: ["cp310-*", "cp311-*", "cp312-*"]
         cibw_archs: ["x86_64"]
     env:
@@ -219,7 +219,6 @@ jobs:
           SYSTEM_VERSION_COMPAT: 0
           CIBW_ENVIRONMENT_MACOS: "ARCHFLAGS='-arch x86_64' _PYTHON_HOST_PLATFORM=macosx-10.9-x86_64 _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__darwin_darwin"
           CIBW_BEFORE_ALL: "export SYSTEM_VERSION_COMPAT=0"
-
       - name: List dist contents (Unix)
         if: runner.os != 'Windows'
         run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
