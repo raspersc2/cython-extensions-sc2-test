@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.40.0 (2025-10-06)
+
+### Features
+
+- Update wheels.yml
+  ([`fd4c842`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/fd4c8427bbeb3aff778d2b3b12a08fd9cd253e79))
+
+
 ## v0.39.0 (2025-10-06)
 
 ### Features
