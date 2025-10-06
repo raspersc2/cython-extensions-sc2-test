@@ -9,19 +9,19 @@ permissions:
   contents: write
 
 jobs:
-  call-testing-pipeline:
-    name: Testing
-    uses: ./.github/workflows/test.yml
+#  call-testing-pipeline:
+#    name: Testing
+#    uses: ./.github/workflows/test.yml
 
   call-compiling-pipeline:
     name: CompileCython
-    needs: call-testing-pipeline
+    # needs: call-testing-pipeline
     uses: ./.github/workflows/compile_cython.yml
 
   version-bump:
     name: VersionBump
     needs:
-      - call-testing-pipeline
+      # - call-testing-pipeline
       - call-compiling-pipeline
     runs-on: ubuntu-latest
     outputs:

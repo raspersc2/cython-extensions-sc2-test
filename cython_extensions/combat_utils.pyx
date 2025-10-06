@@ -19,9 +19,8 @@ cpdef double cy_get_turn_speed(unit, unsigned int unit_type_int):
     """Returns turn speed of unit in radians"""
     cdef double turn_rate
 
-    turn_rate = TURN_RATE_INT_KEYS.get(unit_type_int, None)
-    if turn_rate:
-        return turn_rate * 1.4 * pi / 180
+    turn_rate = TURN_RATE_INT_KEYS.get(unit_type_int, 500.0)
+    return turn_rate * 1.4 * pi / 180
 
 cpdef double cy_range_vs_target(unit, target):
     """Get the range of a unit to a target."""
@@ -29,10 +28,6 @@ cpdef double cy_range_vs_target(unit, target):
         return unit.air_range
     else:
         return unit.ground_range
-
-"""
-End of `cdef` functions
-"""
 
 cpdef bint cy_is_facing(unit, other_unit, double angle_error=0.3):
     cdef:
@@ -213,7 +208,7 @@ cpdef dict cy_adjust_moving_formation(
 
 
 cdef double optimization_function(
-    double[:] params,
+    const double[:] params,
     object targets,
     double effect_radius,
     set bonus_tags
@@ -248,7 +243,7 @@ cdef double optimization_function(
 
 # Wrapper for the optimization function
 cdef double f_wrapper(
-    double[:] params,
+    const double[:] params,
     object targets,
     double effect_radius,
     set bonus_tags
@@ -264,24 +259,20 @@ cpdef cy_find_aoe_position(
     """
     Find the best place to put an AoE effect so that it hits the most units.
     """
-    cdef:
-        double x_min, x_max, y_min, y_max
-        unsigned int len_targets = len(targets)
+    cdef unsigned int len_targets = len(targets)
     if not bonus_tags:
         bonus_tags = set()
     if len_targets == 0:
         return None
     elif len_targets == 1:
-        return targets.first.position
+        return targets[0].position
 
-    # Get bounding box
     (x_min, x_max), (y_min, y_max) = cy_get_bounding_box({u.position_tuple for u in targets})
-    cdef double[:, :] boundaries = np.array([[x_min, x_max], [y_min, y_max]])
+    bounds = [(x_min, x_max), (y_min, y_max)]
 
-    # OptimizeResult
     result = differential_evolution(
         f_wrapper,
-        bounds=boundaries,
+        bounds=bounds,
         args=(targets, effect_radius, bonus_tags),
         tol=1e-10
     )
