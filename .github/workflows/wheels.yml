@@ -136,7 +136,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         cibw_build: ["cp311-*", "cp312-*", "cp313-*"]
-        cibw_archs: ["x86_64", "i686"] # "aarch64" and "ppc64le" not working, investigate if needed
+        cibw_archs: ["x86_64"] # "aarch64", "ppc64le", and "i686" not working, investigate if needed
 
     steps:
       - name: Check out repository
@@ -165,7 +165,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
           CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
-          CIBW_BEFORE_BUILD: "python -m pip install -U pip setuptools wheel poetry==1.8.4 poetry-core cython numpy"
+          CIBW_BEFORE_BUILD: "python -m pip install -U pip setuptools wheel poetry==1.8.4 poetry-core cython 'numpy<2.0'"
       - name: List dist contents (Unix)
         if: runner.os != 'Windows'
         run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
