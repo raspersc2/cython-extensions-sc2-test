@@ -164,8 +164,8 @@ jobs:
         env:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
-          CIBW_BEFORE_BUILD: "python -m pip install -U pip poetry==1.8.4 cython numpy"
-          CIBW_BUILD_COMMAND: "cd {project} && poetry build --format=wheel && python -c \"import os,glob,shutil; out=os.environ['CIBW_OUTPUT_DIR']; os.makedirs(out, exist_ok=True); [shutil.copy(w, out) for w in glob.glob('dist/*.whl')]\""
+          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
+          CIBW_BEFORE_BUILD: "python -m pip install -U pip poetry==1.8.4 cython numpy && cd {project} && poetry install --only main"
       - name: List dist contents (Unix)
         if: runner.os != 'Windows'
         run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
@@ -221,8 +221,8 @@ jobs:
           SYSTEM_VERSION_COMPAT: 0
           CIBW_ENVIRONMENT_MACOS: "ARCHFLAGS='-arch x86_64' _PYTHON_HOST_PLATFORM=macosx-10.9-x86_64 _PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata__darwin_darwin"
           CIBW_BEFORE_ALL: "export SYSTEM_VERSION_COMPAT=0"
-          CIBW_BEFORE_BUILD: "python -m pip install -U pip poetry==1.8.4 cython numpy"
-          CIBW_BUILD_COMMAND: "cd {project} && poetry build --format=wheel && python -c \"import os,glob,shutil; out=os.environ['CIBW_OUTPUT_DIR']; os.makedirs(out, exist_ok=True); [shutil.copy(w, out) for w in glob.glob('dist/*.whl')]\""
+          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
+          CIBW_BEFORE_BUILD: "python -m pip install -U pip poetry==1.8.4 cython numpy && cd {project} && poetry install --only main"
       - name: List dist contents (Unix)
         if: runner.os != 'Windows'
         run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
@@ -269,8 +269,8 @@ jobs:
           CIBW_BUILD: ${{ matrix.cibw_build }}
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_TEST_SKIP: "*-macosx_arm64"
-          CIBW_BEFORE_BUILD: "python -m pip install -U pip poetry==1.8.4 cython numpy"
-          CIBW_BUILD_COMMAND: "cd {project} && poetry build --format=wheel && python -c \"import os,glob,shutil; out=os.environ['CIBW_OUTPUT_DIR']; os.makedirs(out, exist_ok=True); [shutil.copy(w, out) for w in glob.glob('dist/*.whl')]\""
+          CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
+          CIBW_BEFORE_BUILD: "python -m pip install -U pip poetry==1.8.4 cython numpy && cd {project} && poetry install --only main"
       - name: List dist contents (Unix)
         if: runner.os != 'Windows'
         run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
