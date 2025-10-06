@@ -165,7 +165,7 @@ jobs:
           CIBW_ARCHS: ${{ matrix.cibw_archs }}
           CIBW_BUILD: ${{ matrix.cibw_build }}
           CIBW_BUILD_FRONTEND: "pip; args: --no-build-isolation"
-          CIBW_BEFORE_BUILD: "python -m pip install -U pip poetry==1.8.4 cython numpy && cd {project} && poetry install --only main"
+          CIBW_BEFORE_BUILD: "python -m pip install -U pip setuptools wheel poetry==1.8.4 poetry-core cython numpy burnysc2"
       - name: List dist contents (Unix)
         if: runner.os != 'Windows'
         run: if [ -d dist ]; then ls -lh dist/; else echo "dist/ does not exist"; fi
