@@ -1,7 +1,15 @@
 # CHANGELOG
 
 
+## v0.38.0 (2025-10-06)
+
+
 ## v0.37.0 (2025-10-06)
+
+### Features
+
+- Update pyproject.toml
+  ([`4297826`](https://github.com/raspersc2/cython-extensions-sc2-test/commit/4297826f4d01d77f99dd59b2d2cf37c05ea9c9b1))
 
 
 ## v0.36.0 (2025-04-25)
